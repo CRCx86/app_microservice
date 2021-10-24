@@ -1,7 +1,7 @@
 version: "2.3"
 
 services:
-  app:
+  app_microservice:
     image: ${DOCKER_IMAGE}:${VERSION}
     environment:
       APP_MICROSERVICE_ENV: dev
@@ -9,7 +9,7 @@ services:
       APP_MICROSERVICE_V7_ELASTIC_URL: http://esv701:9200/
       APP_MICROSERVICE_APP_SERVICE_BASE_URL: http://wiremock:7070/
     stop_grace_period: 1m
-    command: [ "/wait-for-elastic.sh", "http://esv601:9200", "/wait-for-elastic.sh", "http://esv701:9200", "/usr/local/bin/app_microservice" ]
+    command: [ "/wait-for-elastic.sh", "/wait-for-elastic.sh", "http://esv701:9200", "/usr/local/bin/app_microservice" ]
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://0.0.0.0:8080/healthcheck" ]
       interval: 10s
@@ -19,8 +19,6 @@ services:
       db:
         condition: service_healthy
       esv701:
-        condition: service_started
-      esv601:
         condition: service_started
       wiremock:
         condition: service_started
@@ -57,24 +55,6 @@ services:
     networks:
       - app_microservice
 
-  esv601:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
-    environment:
-      - node.name=esv601
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - discovery.type=single-node
-      - discovery.zen.ping.unicast.hosts=[esv601]
-      - discovery.zen.minimum_master_nodes=1
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    ports:
-      - 9600:9200
-    networks:
-      - app_microservice
-
   liquibase:
     image: ${DOCKER_LIQUIBASE_IMAGE}:${VERSION}
     command: [ "liquibase", "updateTestingRollback" ]
@@ -95,7 +75,7 @@ services:
     build: ../../tests/integration
     command: [ "/app/wait-for-app.sh", "app", "8080", "readiness", "pytest", "-xvv", "tests/" ]
     environment:
-      APP_MICROSERVICE_APISERVER_HOST: 'http://app'
+      APP_MICROSERVICE_APISERVER_HOST: 'http://app_microservice'
       APP_MICROSERVICE_APISERVER_PORT: 8080
       APP_MICROSERVICE_SERVICE_LOG_LEVEL: INFO
       ES_HOST_V7: esv701
@@ -114,7 +94,7 @@ services:
     volumes:
       - ../../tests/wiremock_stubs:/home/wiremock
     ports:
-      - 7070:7070
+      - "7070:7070"
     #    logging:
     #      entity: none
     networks:

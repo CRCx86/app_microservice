@@ -36,17 +36,17 @@ services:
     volumes:
       - ../../build/app_microservice:/usr/local/bin/app_microservice
 
-#  api:
-#    build:
-#      context: ../../.
-#      dockerfile: ""
-#    command: ["caddy", "run", "--config", "/var/www/caddy.json"]
-#    ports:
-#      - 8765:80
-#    volumes:
-#      - ../../api/openapi.yaml:/var/www/openapi.yaml
-#    networks:
-#      - app_microservice
+  api:
+    build:
+      context: ../../.
+      dockerfile: ""
+    command: ["caddy", "run", "--config", "/var/www/caddy.json"]
+    ports:
+      - "8765:80"
+    volumes:
+      - ../../api/openapi.yaml:/var/www/openapi.yaml
+    networks:
+      - app_microservice
 
   esv701:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
@@ -60,7 +60,7 @@ services:
         soft: -1
         hard: -1
     ports:
-      - 9700:9200
+      - "9700:9200"
     networks:
       - app_microservice
 
@@ -115,7 +115,7 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
-      - 9090:9090
+      - "9090:9090"
     restart: always
     networks:
       - app_microservice
@@ -126,7 +126,7 @@ services:
     depends_on:
       - prometheus
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - ../metrics/grafana/provisioning/:/etc/grafana/provisioning/
     env_file:
