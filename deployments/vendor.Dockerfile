@@ -1,4 +1,4 @@
-FROM golang:1.14-buster as builder
+FROM golang:1.17.2-buster as builder
 RUN set -xe
 RUN apt-get update
 RUN apt-get install make gcc g++

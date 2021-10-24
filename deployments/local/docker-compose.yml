@@ -1,7 +1,7 @@
 version: "2.3"
 
 services:
-  app:
+  app_microservice:
     image: ${DOCKER_IMAGE}:${VERSION}
     environment:
       APP_MICROSERVICE_ENV: dev

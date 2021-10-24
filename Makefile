@@ -7,7 +7,7 @@ COMMIT_SHA = $(shell git rev-parse --short HEAD)
 LDFLAGS = -ldflags "-w -X main.version=${VERSION} -X main.buildDate=${BUILD_DATE} -X main.commit=${COMMIT_SHA}"
 
 # Docker variables
-DOCKER_IMAGE ?= goodsru/app_microservice
+DOCKER_IMAGE ?= zinov/app_microservice
 DOCKER_TAG ?= dev
 DOCKER_LIQUIBASE_IMAGE ?= zinov/liquibase-app_microservice
 LOGGING_TAG ?= app_microservice_app
@@ -18,6 +18,7 @@ name ?= new_migration
 filename = ${date}-${name}
 file = ./migrations/${filename}.sql
 migrations_changelog = ./migrations/changelog.yaml
+
 .PHONY: migration
 migration: ## Add migration file. Usage: $ make migration name="add-to-table"
 	echo "-- liquibase formatted sql" >> ${file}
@@ -29,7 +30,7 @@ migration: ## Add migration file. Usage: $ make migration name="add-to-table"
 
 .PHONY: env
 env: ## Show env configuration
-	go run ./cmd/app_microservice --help
+	go run ./cmd --help
 
 .PHONY: liquibase-docker
 liquibase-docker:
@@ -41,8 +42,8 @@ docker: ## Build a Docker image
 
 .PHONY: dcup
 dcup: liquibase-docker ## Local docker-compose up
-	DOCKER_IMAGE=${DOCKER_IMAGE} DOCKER_LIQUIBASE_IMAGE=${DOCKER_LIQUIBASE_IMAGE} VERSION=${DOCKER_TAG} docker-compose -p ${BINARY_NAME} -f ./deployments/local/docker-compose.yml up -d --build db esv601 esv701 liquibase
-	deployments/wait.sh ${BINARY_NAME}_liquibase_1
+	DOCKER_IMAGE=${DOCKER_IMAGE} DOCKER_LIQUIBASE_IMAGE=${DOCKER_LIQUIBASE_IMAGE} VERSION=${DOCKER_TAG} docker-compose -p ${BINARY_NAME} -f ./deployments/local/docker-compose.yml up -d --build db esv701 liquibase
+	deployments/wait.sh ${BINARY_NAME}-liquibase-1
 	DOCKER_IMAGE=${DOCKER_IMAGE} DOCKER_LIQUIBASE_IMAGE=${DOCKER_LIQUIBASE_IMAGE} VERSION=${DOCKER_TAG} docker-compose -p ${BINARY_NAME} -f ./deployments/local/docker-compose.yml up -d --build --scale liquibase=0
 
 .PHONY: dcdown
@@ -81,7 +82,7 @@ test: dep gen ## Run unit tests
 
 .PHONY: build
 build: test ## Build a binary executable file
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build ${LDFLAGS} -o ${BUILD_DIR}/${BINARY_NAME} ${PACKAGE}/cmd/app_microservice
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build ${LDFLAGS} -o ${BUILD_DIR}/${BINARY_NAME} ${PACKAGE}/cmd
 
 .PHONY: clean
 clean:: ## Remove all containers, images and volumes

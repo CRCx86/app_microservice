@@ -2,6 +2,7 @@ package main
 
 import (
 	"go.uber.org/fx"
+	"os"
 
 	"app_microservice/internal/app_microservice"
 	"app_microservice/internal/app_microservice/app"
@@ -17,6 +18,10 @@ var (
 
 func main() {
 
+	if len(os.Args) > 1 && os.Args[1] == "--help" {
+		app_microservice.Usage()
+		return
+	}
 	conf, err := app_microservice.NewConfig()
 	if err != nil {
 		panic(err)

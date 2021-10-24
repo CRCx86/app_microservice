@@ -20,8 +20,8 @@ type Postgres struct {
 }
 
 type Config struct {
-	DBUser     string `envconfig:"db_user" default:"postgres"`
-	DBPassword string `envconfig:"db_password" default:"postgres"`
+	DBUser     string `envconfig:"db_user" default:"app_microservice"`
+	DBPassword string `envconfig:"db_password" default:"app_microservice"`
 	DBHost     string `envconfig:"db_host" default:"localhost"`
 	DBPort     string `envconfig:"db_port" default:"5432"`
 	DBName     string `envconfig:"db_name" default:"app_microservice"`

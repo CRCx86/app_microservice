@@ -32,8 +32,8 @@ services:
   db:
     image: postgres:12
     environment:
-      POSTGRES_USER: 'microservice'
-      POSTGRES_PASSWORD: 'microservice'
+      POSTGRES_USER: 'app_microservice'
+      POSTGRES_PASSWORD: 'app_microservice'
     ports:
       - '5432:5432'
     expose:
@@ -73,7 +73,7 @@ services:
       LIQUIBASE_PASSWORD: "microservice"
       LIQUIBASE_CHANGELOG: "changelog.yaml"
       LIQUIBASE_DEBUG: "true"
-      LIQUIBASE_URL: "jdbc:postgresql://db:5432/microservice"
+      LIQUIBASE_URL: "jdbc:postgresql://db:5432/app_microservice"
     depends_on:
       db:
         condition: service_healthy
@@ -89,9 +89,9 @@ services:
       APP_MICROSERVICE_SERVICE_LOG_LEVEL: DEBUG
       ES_HOST_V6: esv601
       ES_HOST_V7: esv701
-      POSTGRES_USER: 'microservice'
-      POSTGRES_PASSWORD: 'microservice'
-      POSTGRES_DATABASE: 'microservice'
+      POSTGRES_USER: 'app_microservice'
+      POSTGRES_PASSWORD: 'app_microservice'
+      POSTGRES_DATABASE: 'app_microservice'
       POSTGRES_HOST: 'db'
     depends_on:
       - app

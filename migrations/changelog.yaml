@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: 2021-10-24-14-53-migration-initial.sql
+  - include:
+      file: 2021-10-24-14-53-create-temps.sql
