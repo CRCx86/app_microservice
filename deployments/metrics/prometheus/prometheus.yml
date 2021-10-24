@@ -1,0 +1,15 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+
+  external_labels:
+    monitor: 'app_microservice'
+
+alerting:
+  alertmanagers: []
+
+scrape_configs:
+  - job_name: 'app_microservice'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['app_microservice:8080'] # только для теста.

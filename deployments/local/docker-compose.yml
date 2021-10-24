@@ -1,0 +1,142 @@
+version: "2.3"
+
+services:
+  app:
+    image: ${DOCKER_IMAGE}:${VERSION}
+    environment:
+      APP_MICROSERVICE_ENV: dev
+      APP_MICROSERVICE_APISERVER_PORT: 8080
+      APP_MICROSERVICE_V7_ELASTIC_URL: http://esv701:9200/
+      APP_MICROSERVICE_APP_SERVICE_BASE_URL: http://127.0.0.1 #поменять после добавления wiremock
+      JAEGER_AGENT_HOST: jaeger
+      JAEGER_AGENT_PORT: 6831
+      JAEGER_SAMPLER_TYPE: remote
+      JAEGER_SAMPLER_PARAM: 1
+      JAEGER_SERVICE_NAME: app_microservice
+    stop_grace_period: 1m
+    command: ["/wait-for-elastic.sh", "http://esv701:9200", "/usr/local/bin/app_microservice"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8080/healthcheck"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    depends_on:
+      db:
+        condition: service_healthy
+      esv701:
+        condition: service_started
+      esv601:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    networks:
+      - app_microservice
+#    logging:
+#      entity: gelf
+#      options:
+#        gelf-address: udp://127.0.0.1:12201
+    volumes:
+      - ../../build/app_microservice:/usr/local/bin/app_microservice
+
+  api:
+    build:
+      context: ../../.
+      dockerfile: ""
+    command: ["caddy", "run", "--config", "/var/www/caddy.json"]
+    ports:
+      - 8765:80
+    volumes:
+      - ../../api/openapi.yaml:/var/www/openapi.yaml
+    networks:
+      - app_microservice
+
+  esv701:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    environment:
+      - node.name=esv701
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9700:9200
+    networks:
+      - app_microservice
+
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: 'app_microservice'
+      POSTGRES_PASSWORD: 'app_microservice'
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+    healthcheck:
+      test: ["CMD", "pg_isready" ,"-U", "app_microservice"]
+      timeout: 5s
+      retries: 10
+    networks:
+      - app_microservice
+
+  liquibase:
+    image: ${DOCKER_LIQUIBASE_IMAGE}:${VERSION}
+    command: ["liquibase", "updateTestingRollback"]
+    environment:
+      LIQUIBASE_DATABASE: "app_microservice"
+      LIQUIBASE_USERNAME: "app_microservice"
+      LIQUIBASE_PASSWORD: "app_microservice"
+      LIQUIBASE_CHANGELOG: "changelog.yaml"
+      LIQUIBASE_DEBUG: "true"
+      LIQUIBASE_URL: "jdbc:postgresql://db:5432/app_microservice"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_microservice
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    hostname: jaeger
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"
+    networks:
+      - app_microservice
+
+  prometheus:
+    image: prom/prometheus:v2.1.0
+    volumes:
+      - ../metrics/prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    restart: always
+    networks:
+      - app_microservice
+
+  grafana:
+    image: grafana/grafana
+    user: "104"
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ../metrics/grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ../metrics/grafana/config.monitoring
+    restart: always
+    networks:
+      - app_microservice
+
+networks:
+  app_microservice:
+    driver: bridge

@@ -1,0 +1,115 @@
+version: "2.3"
+
+services:
+  app:
+    image: ${DOCKER_IMAGE}:${VERSION}
+    environment:
+      APP_MICROSERVICE_ENV: dev
+      APP_MICROSERVICE_APISERVER_PORT: 8080
+      APP_MICROSERVICE_V7_ELASTIC_URL: http://esv701:9200/
+      APP_MICROSERVICE_APP_SERVICE_BASE_URL: http://wiremock:7070/
+    stop_grace_period: 1m
+    command: ["/wait-for-elastic.sh", "http://esv701:9200", "/usr/local/bin/app_microservice"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:8080/healthcheck"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    depends_on:
+      db:
+        condition: service_healthy
+      esv701:
+        condition: service_started
+      esv601:
+        condition: service_started
+      wiremock:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    networks:
+      - app_microservice
+
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: 'microservice'
+      POSTGRES_PASSWORD: 'microservice'
+    ports:
+      - '5432:5432'
+    expose:
+      - '5432'
+    healthcheck:
+      test: ["CMD", "pg_isready" ,"-U", "microservice"]
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ../fixtures:/var/fixtures
+    networks:
+      - app_microservice
+
+  esv701:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    environment:
+      - node.name=esv701
+      - cluster.name=es-docker-cluster-v7
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9700:9200
+    networks:
+      - app_microservice
+
+  liquibase:
+    image: ${DOCKER_LIQUIBASE_IMAGE}:${VERSION}
+    command: ["liquibase", "updateTestingRollback"]
+    environment:
+      LIQUIBASE_DATABASE: "microservice"
+      LIQUIBASE_USERNAME: "microservice"
+      LIQUIBASE_PASSWORD: "microservice"
+      LIQUIBASE_CHANGELOG: "changelog.yaml"
+      LIQUIBASE_DEBUG: "true"
+      LIQUIBASE_URL: "jdbc:postgresql://db:5432/microservice"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_microservice
+
+  integration-tests:
+    build: ../../tests/integration
+    command: ["/app/wait-for-app.sh", "app", "8080", "readiness", "pytest", "-xvv", "tests/"]
+    environment:
+      APP_MICROSERVICE_APISERVER_HOST: 'http://app'
+      APP_MICROSERVICE_APISERVER_PORT: 8080
+      APP_MICROSERVICE_SERVICE_LOG_LEVEL: DEBUG
+      ES_HOST_V6: esv601
+      ES_HOST_V7: esv701
+      POSTGRES_USER: 'microservice'
+      POSTGRES_PASSWORD: 'microservice'
+      POSTGRES_DATABASE: 'microservice'
+      POSTGRES_HOST: 'db'
+    depends_on:
+      - app
+    networks:
+      - app_microservice
+
+  wiremock:
+    image: rodolpheche/wiremock
+    command: --port 7070 --verbose
+    volumes:
+      - ../../tests/wiremock_stubs:/home/wiremock
+    ports:
+      - 7070:7070
+    #    logging:
+    #      entity: none
+    networks:
+      - app_microservice
+
+networks:
+  app_microservice:
+    driver: bridge
