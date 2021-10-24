@@ -4,10 +4,19 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2610b2dc-8627-4547-bcbf-edf5e213bcc2" name="Changes" comment="">
+    <list default="true" id="2610b2dc-8627-4547-bcbf-edf5e213bcc2" name="Changes" comment="- окружение">
+      <change afterPath="$PROJECT_DIR$/tests/integration/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/integration/healthcheck_validators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/integration/healthchecks/test_healthchecks.tavern.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/integration/not_found/test_not_found.tavern.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/integration/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/integration/wait-for-app.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/wiremock/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/wiremock/stubs/__files/create_response.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/wiremock/stubs/mappings/create_schedule.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/wiremock/stubs/mappings/healthcheck.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/wiremock/stubs/mappings/update_schedule.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/app_microservice" beforeDir="false" afterPath="$PROJECT_DIR$/build/app_microservice" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployments/local/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/local/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,12 +50,12 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="go.vendoring.notification.had.been.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -60,7 +69,7 @@
       </makefile>
       <method v="2" />
     </configuration>
-    <configuration name="local.liquibase: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+    <configuration name="local.liquibase: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
           <option name="envFilePath" value="" />
@@ -76,7 +85,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.local.liquibase: Compose Deployment" />
         <item itemvalue="Makefile Target.build" />
       </list>
     </recent_temporary>
