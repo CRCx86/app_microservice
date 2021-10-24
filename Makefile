@@ -43,7 +43,7 @@ docker: ## Build a Docker image
 .PHONY: dcup
 dcup: liquibase-docker ## Local docker-compose up
 	DOCKER_IMAGE=${DOCKER_IMAGE} DOCKER_LIQUIBASE_IMAGE=${DOCKER_LIQUIBASE_IMAGE} VERSION=${DOCKER_TAG} docker-compose -p ${BINARY_NAME} -f ./deployments/local/docker-compose.yml up -d --build db esv701 liquibase
-	deployments/wait.sh ${BINARY_NAME}-liquibase-1
+	deployments/wait.sh ${BINARY_NAME}_liquibase_1
 	DOCKER_IMAGE=${DOCKER_IMAGE} DOCKER_LIQUIBASE_IMAGE=${DOCKER_LIQUIBASE_IMAGE} VERSION=${DOCKER_TAG} docker-compose -p ${BINARY_NAME} -f ./deployments/local/docker-compose.yml up -d --build --scale liquibase=0
 
 .PHONY: dcdown

@@ -5,21 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2610b2dc-8627-4547-bcbf-edf5e213bcc2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/app_microservice" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/2021-10-24-14-53-create-temps.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/2021-10-24-14-53-migration-initial.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/changelog.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/app_microservice.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/app_microservice.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/app_microservice" beforeDir="false" afterPath="$PROJECT_DIR$/build/app_microservice" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deployments/local/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/local/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployments/test/docker-compose.tests.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/test/docker-compose.tests.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployments/vendor.Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/vendor.Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/app_microservice/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployments/wait.sh" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/wait.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/internal/pkg/storage/postgres/postgres.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/pkg/storage/postgres/postgres.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,7 +25,7 @@
     <option name="indexEntireGoPath" value="false" />
   </component>
   <component name="ProjectId" id="1zx2UafEegPLbth6QhAuPx8Do4x" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -117,6 +107,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
