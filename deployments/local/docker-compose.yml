@@ -39,7 +39,7 @@ services:
   api:
     build:
       context: ../../.
-      dockerfile: ""
+      dockerfile: deployments/local/apidoc.Dockerfile
     command: ["caddy", "run", "--config", "/var/www/caddy.json"]
     ports:
       - "8765:80"

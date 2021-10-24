@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2610b2dc-8627-4547-bcbf-edf5e213bcc2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/api/caddy.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/openapi.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/app_microservice" beforeDir="false" afterPath="$PROJECT_DIR$/build/app_microservice" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployments/local/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/local/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +41,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.vendoring.notification.had.been.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -60,7 +60,7 @@
       </makefile>
       <method v="2" />
     </configuration>
-    <configuration name="local.liquibase: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <configuration name="local.liquibase: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
           <option name="envFilePath" value="" />
@@ -76,6 +76,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.local.liquibase: Compose Deployment" />
         <item itemvalue="Makefile Target.build" />
       </list>
     </recent_temporary>
