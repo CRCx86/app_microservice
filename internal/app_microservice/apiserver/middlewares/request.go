@@ -31,8 +31,9 @@ func RequestMiddleware(zl *zap.Logger) gin.HandlerFunc {
 			}
 
 			c.Set(app_microservice.KeyMeta, req.Meta)
-			c.Set(app_microservice.KeyRequest, req.Data)
 			zl.Sugar().Info(c, string(req.Meta))
+
+			c.Set(app_microservice.KeyRequest, req.Data)
 			zl.Sugar().Info(c, string(req.Data))
 		}
 

@@ -56,6 +56,8 @@ const (
 
 	KeyRequest  = "requestData"
 	KeyResponse = "responseData"
+
+	KeyUser = "requestUser"
 )
 
 type Envelope struct {

@@ -4,7 +4,6 @@ services:
   db:
     image: postgres:12
     environment:
-      POSTGRES_DB: 'app_microservice'
       POSTGRES_USER: 'app_microservice'
       POSTGRES_PASSWORD: 'app_microservice'
     ports:
@@ -15,6 +14,22 @@ services:
       test: [ "CMD", "pg_isready" ,"-U", "app_microservice" ]
       timeout: 5s
       retries: 10
+    networks:
+      - app_microservice
+
+  liquibase:
+    image: ${DOCKER_LIQUIBASE_IMAGE}:${VERSION}
+    command: [ "liquibase", "updateTestingRollback" ]
+    environment:
+      LIQUIBASE_DATABASE: "app_microservice"
+      LIQUIBASE_USERNAME: "app_microservice"
+      LIQUIBASE_PASSWORD: "app_microservice"
+      LIQUIBASE_CHANGELOG: "changelog.yaml"
+      LIQUIBASE_DEBUG: "true"
+      LIQUIBASE_URL: "jdbc:postgresql://db:5432/app_microservice"
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - app_microservice
 

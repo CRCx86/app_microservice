@@ -11,18 +11,28 @@ import (
 	"go.uber.org/zap"
 
 	"app_microservice/internal/app_microservice"
-	"app_microservice/internal/app_microservice/apiserver/controllers/health"
 	"app_microservice/internal/app_microservice/apiserver/middlewares"
 	"app_microservice/internal/pkg/config"
 )
 
+type controller interface {
+	RegisterRoutes(r *gin.Engine)
+}
+
 type APIServer struct {
-	zl     *zap.Logger
-	Cfg    *config.APIServer
-	server *http.Server
+	zl          *zap.Logger
+	Cfg         *config.APIServer
+	server      *http.Server
+	apiRouter   *gin.Engine
+	controllers []controller
 }
 
 func (s *APIServer) Start(_ context.Context) error {
+
+	for _, c := range s.controllers {
+		c.RegisterRoutes(s.apiRouter)
+	}
+
 	addr := net.JoinHostPort(s.Cfg.Host, strconv.Itoa(s.Cfg.ApiPort))
 	ln, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -44,10 +54,15 @@ func (s *APIServer) Stop(ctx context.Context) error {
 	return s.server.Shutdown(c)
 }
 
+func (s *APIServer) AddController(c ...controller) *APIServer {
+	s.controllers = append(s.controllers, c...)
+	return s
+}
+
 func NewAPIServer(
+	apiServer *config.APIServer,
 	cfg *app_microservice.Config,
 	l *zap.Logger,
-	hc *health.Controller,
 ) *APIServer {
 
 	gin.DisableConsoleColor()
@@ -57,26 +72,26 @@ func NewAPIServer(
 
 	r := gin.New()
 
-	registerStateMiddlewares(r, l)
-
-	hc.RegisterRoutes(r)
+	registerStateMiddlewares(r, cfg, l)
 
 	appServer := &http.Server{
 		Handler:      r,
-		ReadTimeout:  cfg.APIServer.ReadTimeout,
-		WriteTimeout: cfg.APIServer.WriteTimeout,
+		ReadTimeout:  apiServer.ReadTimeout,
+		WriteTimeout: apiServer.WriteTimeout,
 	}
 
 	return &APIServer{
-		zl:     l,
-		Cfg:    &cfg.APIServer,
-		server: appServer,
+		zl:        l,
+		Cfg:       apiServer,
+		server:    appServer,
+		apiRouter: r,
 	}
 }
 
-func registerStateMiddlewares(r *gin.Engine, l *zap.Logger) {
+func registerStateMiddlewares(r *gin.Engine, cfg *app_microservice.Config, l *zap.Logger) {
 	r.Use(stats.RequestStats())
 	r.Use(middlewares.RequestMiddleware(l))
+	r.Use(middlewares.JwtAuthenticationMiddleware(l, cfg))
 	r.Use(middlewares.ResponseMiddleware())
 	r.Use(middlewares.RecoveryMiddleware(l))
 	r.Use(middlewares.TracerMiddleware())
