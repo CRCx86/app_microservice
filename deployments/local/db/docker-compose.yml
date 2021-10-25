@@ -4,6 +4,7 @@ services:
   db:
     image: postgres:12
     environment:
+      POSTGRES_DB: 'app_microservice'
       POSTGRES_USER: 'app_microservice'
       POSTGRES_PASSWORD: 'app_microservice'
     ports:
