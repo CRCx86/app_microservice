@@ -1,10 +1,11 @@
 package user
 
 import (
+	"app_microservice/internal/pkg/util"
 	"context"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
+	"strings"
 
 	"github.com/Masterminds/squirrel"
 	"golang.org/x/crypto/bcrypt"
@@ -31,7 +32,40 @@ func NewService(cfg *app_microservice.Config, userRepository *user.Repository) *
 	}
 }
 
+func (s Service) Validate(ctx context.Context, user dto.User) (result bool, ok error) {
+
+	if !strings.Contains(user.Email, "@") { // TODO: заменить на регулярки
+		return false, errors.New("email address is required")
+	}
+
+	if len(user.Password) < 6 {
+		return false, errors.New("password required and must be greater then 6 symbols")
+	}
+
+	_sql, args, err := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Select("*").
+		From("users").
+		Where(squirrel.Eq{"email": user.Email}).
+		ToSql()
+	if err != nil {
+		return false, err
+	}
+
+	data, err := s.userRepository.Get(ctx, _sql, args...)
+	if len(data) == 0 {
+		return true, nil
+	}
+
+	return result, errors.New("email address already in use by another user")
+}
+
 func (s *Service) Create(ctx context.Context, user dto.User) (string, error) {
+
+	if response, ok := s.Validate(ctx, user); !response {
+		return "", ok
+	}
 
 	hashedPassword, ok := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if ok != nil {
@@ -66,7 +100,7 @@ func (s *Service) Create(ctx context.Context, user dto.User) (string, error) {
 	return result, nil
 }
 
-func (s *Service) Login(ctx *gin.Context, item dto.User) (*dto.User, error) {
+func (s *Service) Login(ctx context.Context, item dto.User) (*dto.User, error) {
 
 	_sql, args, err := squirrel.
 		StatementBuilder.
@@ -83,10 +117,15 @@ func (s *Service) Login(ctx *gin.Context, item dto.User) (*dto.User, error) {
 	if len(data) < 1 {
 		return nil, errors.New("no user data")
 	}
+
 	var account dto.User
-	account.Id = uint(data[0]["id"].(int32))
-	account.Email = data[0]["email"].(string)
-	account.Password = data[0]["password"].(string)
+	err = util.ToEntity(data, &account)
+	if err != nil {
+		return nil, err
+	}
+	//account.Id = uint(data[0]["id"].(int32))
+	//account.Email = data[0]["email"].(string)
+	//account.Password = data[0]["password"].(string)
 
 	err = bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(item.Password))
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {

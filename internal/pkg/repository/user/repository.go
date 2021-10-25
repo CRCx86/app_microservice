@@ -1,10 +1,8 @@
 package user
 
 import (
-	"context"
-	"github.com/gin-gonic/gin"
-
 	"app_microservice/internal/pkg/repository/root"
+	"context"
 )
 
 type Repository struct {
@@ -19,6 +17,6 @@ func (r *Repository) CreateOrUpdate(ctx context.Context, sql string, args ...int
 	return r.root.CreateOrUpdate(ctx, sql, args...)
 }
 
-func (r *Repository) Get(ctx *gin.Context, sql string, args ...interface{}) ([]map[string]interface{}, error) {
+func (r *Repository) Get(ctx context.Context, sql string, args ...interface{}) ([]map[string]interface{}, error) {
 	return r.root.Get(ctx, sql, args...)
 }

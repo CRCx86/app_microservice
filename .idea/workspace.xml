@@ -4,29 +4,12 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2610b2dc-8627-4547-bcbf-edf5e213bcc2" name="Changes" comment="- Запуск контейнера с postgres">
-      <change afterPath="$PROJECT_DIR$/internal/app_microservice/apiserver/controllers/authentication/controller.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/app_microservice/apiserver/middlewares/jwtAuthentication.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/pkg/dto/user.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/pkg/repository/user/repository.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/pkg/service/user/service.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/migrations/2021-10-25-14-06-create-users.sql" afterDir="false" />
+    <list default="true" id="2610b2dc-8627-4547-bcbf-edf5e213bcc2" name="Changes" comment="- jwt auth">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/app_microservice" beforeDir="false" afterPath="$PROJECT_DIR$/build/app_microservice" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deployments/local/db/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/deployments/local/db/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/apiserver/APIServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/app_microservice/apiserver/APIServer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/apiserver/controllers/health/Health.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/app_microservice/apiserver/controllers/health/controller.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/apiserver/middlewares/request.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/app_microservice/apiserver/middlewares/request.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/apiserver/module.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/app_microservice/apiserver/module.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/app_microservice/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/repository/module.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/app_microservice/repository/module.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/service/health/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/pkg/service/health/service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/app_microservice/service/module.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/app_microservice/service/module.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/pkg/config/APIServer.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/pkg/config/APIServer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/changelog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/changelog.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vendor/modules.txt" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/modules.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pkg/repository/user/repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/pkg/repository/user/repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pkg/service/user/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/pkg/service/user/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/pkg/util/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/pkg/util/utils.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,20 +139,10 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="- Запуск контейнера с postgres" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Запуск контейнера с postgres" />
+    <MESSAGE value="- jwt auth" />
+    <option name="LAST_COMMIT_MESSAGE" value="- jwt auth" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/internal/pkg/service/user/service.go</url>
-          <line>81</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
