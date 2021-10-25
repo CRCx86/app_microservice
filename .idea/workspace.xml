@@ -4,19 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2610b2dc-8627-4547-bcbf-edf5e213bcc2" name="Changes" comment="- окружение">
-      <change afterPath="$PROJECT_DIR$/tests/integration/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/healthcheck_validators.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/healthchecks/test_healthchecks.tavern.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/not_found/test_not_found.tavern.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/integration/wait-for-app.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/wiremock/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/wiremock/stubs/__files/create_response.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/wiremock/stubs/mappings/create_schedule.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/wiremock/stubs/mappings/healthcheck.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/wiremock/stubs/mappings/update_schedule.json" afterDir="false" />
+    <list default="true" id="2610b2dc-8627-4547-bcbf-edf5e213bcc2" name="Changes" comment="- тесты">
+      <change afterPath="$PROJECT_DIR$/deployments/local/db/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/modules.txt" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/modules.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +56,20 @@
       <recent name="C:\Users\crc32\go\src\app_microservice" />
     </key>
   </component>
-  <component name="RunManager" selected="Docker.local.liquibase: Compose Deployment">
+  <component name="RunManager" selected="Go Build.go build app_microservice/cmd">
+    <configuration name="go build app_microservice/cmd" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="app_microservice" />
+      <working_directory value="$PROJECT_DIR$" />
+      <envs>
+        <env name="APP_MICROSERVICE_ENV" value="dev" />
+        <env name="APP_MICROSERVICE_APISERVER_PORT" value="8080" />
+      </envs>
+      <kind value="PACKAGE" />
+      <package value="app_microservice/cmd" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/cmd/main.go" />
+      <method v="2" />
+    </configuration>
     <configuration name="build" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/Makefile" target="build" workingDirectory="" arguments="">
         <envs />
@@ -83,8 +90,14 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Docker.local.liquibase: Compose Deployment" />
+      <item itemvalue="Go Build.go build app_microservice/cmd" />
+      <item itemvalue="Makefile Target.build" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build app_microservice/cmd" />
         <item itemvalue="Makefile Target.build" />
       </list>
     </recent_temporary>
@@ -98,6 +111,14 @@
       <option name="presentableId" value="Default" />
       <updated>1635075434565</updated>
     </task>
+    <task id="LOCAL-00001" summary="- тесты">
+      <created>1635107602026</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1635107602026</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +138,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="- тесты" />
+    <option name="LAST_COMMIT_MESSAGE" value="- тесты" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

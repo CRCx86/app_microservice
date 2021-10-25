@@ -66,6 +66,14 @@ dcgrayup:: ## Graylog docker-compose up
 dcgraydown:: ## Graylog docker-compose down
 	docker-compose -f ./deployments/graylog/docker-compose.yml down
 
+.PHONY: dbup
+dbup:: ## Postgres docker-compose up
+	DOCKER_IMAGE=${DOCKER_IMAGE} VERSION=${DOCKER_TAG} docker-compose -p ${BINARY_NAME} -f ./deployments/local/db/docker-compose.yml up -d --build db
+
+.PHONY: dbdown
+dbdown:: ## Postgres docker-compose down
+	DOCKER_IMAGE=${DOCKER_IMAGE} VERSION=${DOCKER_TAG} docker-compose -p ${BINARY_NAME} -f ./deployments/local/db/docker-compose.yml down
+
 .PHONY: dep
 dep: ## Install dependencies
 	$(eval PACKAGE := $(shell go list -m))
