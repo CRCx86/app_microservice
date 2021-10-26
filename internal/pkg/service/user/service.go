@@ -1,18 +1,18 @@
 package user
 
 import (
-	"app_microservice/internal/pkg/util"
 	"context"
 	"errors"
-	"github.com/dgrijalva/jwt-go"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 
 	"app_microservice/internal/app_microservice"
 	"app_microservice/internal/pkg/dto"
 	"app_microservice/internal/pkg/repository/user"
+	"app_microservice/internal/pkg/util"
 )
 
 type Token struct {

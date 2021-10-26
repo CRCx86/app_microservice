@@ -1,10 +1,10 @@
 package repository
 
 import (
-	"app_microservice/internal/pkg/repository/user"
 	"go.uber.org/fx"
 
 	"app_microservice/internal/pkg/repository/root"
+	"app_microservice/internal/pkg/repository/user"
 )
 
 func Module() fx.Option {

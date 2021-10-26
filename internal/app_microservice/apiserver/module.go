@@ -1,10 +1,10 @@
 package apiserver
 
 import (
-	"app_microservice/internal/app_microservice"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 
+	"app_microservice/internal/app_microservice"
 	"app_microservice/internal/app_microservice/apiserver/controllers/authentication"
 	"app_microservice/internal/app_microservice/apiserver/controllers/health"
 )

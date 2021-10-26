@@ -1,10 +1,10 @@
 package service
 
 import (
-	"app_microservice/internal/pkg/service/user"
 	"go.uber.org/fx"
 
 	"app_microservice/internal/pkg/service/health"
+	"app_microservice/internal/pkg/service/user"
 )
 
 func Module() fx.Option {

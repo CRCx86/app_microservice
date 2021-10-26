@@ -6,6 +6,7 @@ services:
     environment:
       APP_MICROSERVICE_ENV: dev
       APP_MICROSERVICE_APISERVER_PORT: 8080
+      APP_MICROSERVICE_POSTGRES_DB_HOST: db
       APP_MICROSERVICE_V7_ELASTIC_URL: http://esv701:9200/
       APP_MICROSERVICE_APP_SERVICE_BASE_URL: http://wiremock:7070/
     stop_grace_period: 1m
@@ -19,8 +20,6 @@ services:
       db:
         condition: service_healthy
       esv701:
-        condition: service_started
-      esv601:
         condition: service_started
       wiremock:
         condition: service_started

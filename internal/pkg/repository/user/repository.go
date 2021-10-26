@@ -1,8 +1,9 @@
 package user
 
 import (
-	"app_microservice/internal/pkg/repository/root"
 	"context"
+
+	"app_microservice/internal/pkg/repository/root"
 )
 
 type Repository struct {

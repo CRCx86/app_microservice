@@ -2,10 +2,10 @@ package root
 
 import (
 	"context"
-	"github.com/Masterminds/squirrel"
 	"testing"
 	"time"
 
+	"github.com/Masterminds/squirrel"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 

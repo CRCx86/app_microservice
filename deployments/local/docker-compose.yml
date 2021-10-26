@@ -6,8 +6,9 @@ services:
     environment:
       APP_MICROSERVICE_ENV: dev
       APP_MICROSERVICE_APISERVER_PORT: 8080
+      APP_MICROSERVICE_POSTGRES_DB_HOST: db
       APP_MICROSERVICE_V7_ELASTIC_URL: http://esv701:9200/
-      APP_MICROSERVICE_APP_SERVICE_BASE_URL: http://127.0.0.1 #поменять после добавления wiremock
+      APP_MICROSERVICE_APP_SERVICE_BASE_URL: http://127.0.0.1 # поменять после добавления wiremock
       JAEGER_AGENT_HOST: jaeger
       JAEGER_AGENT_PORT: 6831
       JAEGER_SAMPLER_TYPE: remote
