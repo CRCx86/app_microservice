@@ -18,7 +18,7 @@ func JwtAuthenticationMiddleware(zl *zap.Logger, cfg *app_microservice.Config) g
 
 func JwtAuthentication(l *zap.Logger, cfg *app_microservice.Config) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		noAuth := []string{"/api/account/auth", "/api/account/login"}
+		noAuth := []string{"/api/account/auth", "/api/account/login", "/api/health"}
 		requestPath := ctx.Request.URL.Path
 
 		for _, value := range noAuth {
