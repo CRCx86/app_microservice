@@ -12,7 +12,7 @@
 /vendor
 /ssl
 /build/
-
+/.idea/
 /venv
 .netrc
 /datastore/
