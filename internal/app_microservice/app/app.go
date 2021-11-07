@@ -1,6 +1,7 @@
 package app
 
 import (
+	v7 "app_microservice/internal/app_microservice/storage/elastic/v7"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 
@@ -43,13 +44,14 @@ func Provide(conf *app_microservice.Config, zl *zap.Logger) fx.Option {
 			}),
 
 		postgres.Module(),
+		v7.Module(),
 		repository.Module(),
 		service.Module(),
 		apiserver.Module(),
 
 		fx.Invoke(
 			func(cfg *app_microservice.Config, logger *zap.Logger) {
-				logger.Info("Order Management System has started...")
+				logger.Info("app_microservice System has started...")
 			},
 		),
 	)

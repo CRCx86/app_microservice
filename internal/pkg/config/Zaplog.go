@@ -11,14 +11,14 @@ const (
 	DefaultOutputPath = "stdout"
 )
 
-type Logger struct {
+type ZapLogger struct {
 	Debug       bool     `envconfig:"debug"`
 	Level       string   `envconfig:"level" default:"info"`
 	Output      []string `envconfig:"output"`
 	TimeEncoder string   `envconfig:"time_encoder" default:"epoch"`
 }
 
-func (c Logger) GetOutput() []string {
+func (c ZapLogger) GetOutput() []string {
 	if len(c.Output) == 0 {
 		return []string{DefaultOutputPath}
 	}

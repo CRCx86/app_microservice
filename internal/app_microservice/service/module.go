@@ -1,6 +1,7 @@
 package service
 
 import (
+	"app_microservice/internal/pkg/service/log"
 	"go.uber.org/fx"
 
 	"app_microservice/internal/pkg/service/health"
@@ -9,6 +10,7 @@ import (
 
 func Module() fx.Option {
 	return fx.Options(
+		fx.Provide(log.NewService),
 		fx.Provide(health.NewService),
 		fx.Provide(user.NewService),
 

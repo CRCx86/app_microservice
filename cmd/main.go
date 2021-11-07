@@ -6,8 +6,8 @@ import (
 
 	"app_microservice/internal/app_microservice"
 	"app_microservice/internal/app_microservice/app"
-	"app_microservice/internal/pkg/logger"
 	"app_microservice/internal/pkg/tracing"
+	"app_microservice/internal/pkg/zaplog"
 )
 
 var (
@@ -31,7 +31,7 @@ func main() {
 	conf.BuildDate = buildDate
 	conf.Commit = commit
 
-	zapLogger, err := logger.New(app.Name, *conf)
+	zapLogger, err := zaplog.New(app.Name, *conf)
 	if err != nil {
 		panic(err)
 	}

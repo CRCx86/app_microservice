@@ -1,7 +1,13 @@
 package util
 
 import (
+	"app_microservice/internal/app_microservice"
 	"encoding/json"
+	"fmt"
+	"runtime"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/jackc/pgx/v4"
 )
@@ -50,4 +56,24 @@ func ToEntity(data []map[string]interface{}, entity interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func MessageToExternalLog(data map[string]interface{}, Type string, Description string) app_microservice.LogMessage {
+	return app_microservice.LogMessage{
+		Data:        data["data"].(string),
+		Description: Description,
+		Type:        Type,
+		Timestamp:   time.Now().String(),
+	}
+}
+
+func GetGoroutineId() int {
+	var buf [64]byte
+	n := runtime.Stack(buf[:], false)
+	idField := strings.Fields(strings.TrimPrefix(string(buf[:n]), "goroutine "))[0]
+	id, err := strconv.Atoi(idField)
+	if err != nil {
+		panic(fmt.Sprintf("cannot get goroutine id: %v", err))
+	}
+	return id
 }
