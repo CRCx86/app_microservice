@@ -3,10 +3,11 @@ package user
 import (
 	"context"
 	"errors"
-	"strings"
+	"fmt"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 
 	"app_microservice/internal/app_microservice"
@@ -32,14 +33,10 @@ func NewService(cfg *app_microservice.Config, userRepository *user.Repository) *
 	}
 }
 
-func (s Service) Validate(ctx context.Context, user dto.User) (result bool, ok error) {
+func (s *Service) Validate(ctx context.Context, user dto.User) (result bool, ok error) {
 
-	if !strings.Contains(user.Email, "@") { // TODO: заменить на регулярки
-		return false, errors.New("email address is required")
-	}
-
-	if len(user.Password) < 6 {
-		return false, errors.New("password required and must be greater then 6 symbols")
+	if message, ok := user.Validate(); !ok {
+		return false, errors.New(message)
 	}
 
 	_sql, args, err := squirrel.
@@ -102,6 +99,28 @@ func (s *Service) Create(ctx context.Context, user dto.User) (string, error) {
 
 func (s *Service) Login(ctx context.Context, item dto.User) (*dto.User, error) {
 
+	account, err := s.GetByEmail(ctx, item)
+	if err != nil {
+		return nil, err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(item.Password))
+	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+		return nil, err
+	}
+
+	tk := &Token{UserId: account.Id}
+	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
+	tokenString, err := token.SignedString([]byte(s.cfg.APIServer.TokenPassword))
+	if err != nil {
+		return nil, err
+	}
+	account.Password = tokenString
+
+	return account, nil
+}
+
+func (s *Service) GetByEmail(ctx context.Context, item dto.User) (*dto.User, error) {
 	_sql, args, err := squirrel.
 		StatementBuilder.
 		PlaceholderFormat(squirrel.Dollar).
@@ -118,27 +137,69 @@ func (s *Service) Login(ctx context.Context, item dto.User) (*dto.User, error) {
 		return nil, errors.New("no user data")
 	}
 
-	var account dto.User
-	err = util.ToEntity(data, &account)
+	var accounts []dto.User
+	err = util.ToEntity(data, &accounts)
 	if err != nil {
 		return nil, err
 	}
-	//account.Id = uint(data[0]["id"].(int32))
-	//account.Email = data[0]["email"].(string)
-	//account.Password = data[0]["password"].(string)
 
-	err = bcrypt.CompareHashAndPassword([]byte(account.Password), []byte(item.Password))
-	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
-		return nil, err
-	}
+	return &accounts[0], nil
+}
 
-	tk := &Token{UserId: account.Id}
-	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
-	tokenString, err := token.SignedString([]byte(s.cfg.APIServer.TokenPassword))
+func (s *Service) GetById(ctx context.Context, item dto.User) (*dto.User, error) {
+	_sql, args, err := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Select("*").
+		From("users").
+		Where(squirrel.Eq{"id": item.Id}).
+		ToSql()
 	if err != nil {
 		return nil, err
 	}
-	account.Password = tokenString
 
-	return &account, nil
+	data, err := s.userRepository.Get(ctx, _sql, args...)
+	if len(data) < 1 {
+		return nil, errors.New("no user data")
+	}
+
+	if len(data) > 1 {
+		message := fmt.Sprintf("not unique user by id: %d", item.Id)
+		return nil, errors.New(message)
+	}
+
+	var accounts []dto.User
+	err = util.ToEntity(data, &accounts)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &accounts[0], nil
+}
+
+func (s *Service) List(ctx *gin.Context) ([]dto.User, error) {
+
+	_sql, args, err := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Select("*").
+		From("users").
+		ToSql()
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := s.userRepository.Get(ctx, _sql, args...)
+	if err != nil {
+		return nil, err
+	}
+
+	var users []dto.User
+	err = util.ToEntity(data, &users)
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }

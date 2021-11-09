@@ -31,16 +31,20 @@ func JwtAuthentication(l *zap.Logger, cfg *app_microservice.Config) gin.HandlerF
 		tokenHeader := ctx.Request.Header.Get("Authorization")
 
 		if tokenHeader == "" {
-			_ = ctx.Error(errors.New("missing auth token"))
-			ctx.Set(app_microservice.KeyResponse, "missing auth token")
+			message := "missing auth token"
+			_ = ctx.Error(errors.New(message))
+			ctx.Set(app_microservice.KeyResponse, message)
+			l.Sugar().Error(message)
 			ctx.Next()
 			return
 		}
 
 		splitter := strings.Split(tokenHeader, " ")
 		if len(splitter) != 2 {
-			_ = ctx.Error(errors.New("invalid/Malformed auth token"))
-			ctx.Set(app_microservice.KeyResponse, "invalid/Malformed auth token")
+			message := "invalid/Malformed auth token"
+			_ = ctx.Error(errors.New(message))
+			ctx.Set(app_microservice.KeyResponse, message)
+			l.Sugar().Error(message)
 			ctx.Next()
 			return
 		}
@@ -53,15 +57,19 @@ func JwtAuthentication(l *zap.Logger, cfg *app_microservice.Config) gin.HandlerF
 		})
 
 		if err != nil {
-			_ = ctx.Error(errors.New("malformed user token"))
-			ctx.Set(app_microservice.KeyResponse, "malformed auth token")
+			message := "malformed auth token"
+			_ = ctx.Error(errors.New(message))
+			ctx.Set(app_microservice.KeyResponse, message)
+			l.Sugar().Error(message)
 			ctx.Next()
 			return
 		}
 
 		if !token.Valid {
-			_ = ctx.Error(errors.New("token is not valid"))
-			ctx.Set(app_microservice.KeyResponse, "token is not valid")
+			message := "token is not valid"
+			_ = ctx.Error(errors.New(message))
+			ctx.Set(app_microservice.KeyResponse, message)
+			l.Sugar().Error(message)
 			ctx.Next()
 			return
 		}

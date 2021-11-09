@@ -7,6 +7,7 @@ import (
 	"app_microservice/internal/app_microservice"
 	"app_microservice/internal/app_microservice/apiserver/controllers/authentication"
 	"app_microservice/internal/app_microservice/apiserver/controllers/health"
+	"app_microservice/internal/app_microservice/apiserver/controllers/user"
 )
 
 type ApiServer struct {
@@ -16,6 +17,7 @@ type ApiServer struct {
 
 	Health *health.Controller
 	Auth   *authentication.Controller
+	User   *user.Controller
 }
 
 func Module() fx.Option {
@@ -23,11 +25,13 @@ func Module() fx.Option {
 
 		fx.Provide(health.NewController),
 		fx.Provide(authentication.NewController),
+		fx.Provide(user.NewController),
 
 		fx.Provide(func(a ApiServer) *APIServer {
 			return NewAPIServer(&a.Cfg.APIServer, a.Cfg, a.Zl).
 				AddController(a.Health).
-				AddController(a.Auth)
+				AddController(a.Auth).
+				AddController(a.User)
 		}),
 
 		fx.Invoke(

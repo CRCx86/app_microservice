@@ -47,7 +47,7 @@ func ParseRowQuery(rows pgx.Rows) ([]map[string]interface{}, error) {
 
 func ToEntity(data []map[string]interface{}, entity interface{}) error {
 
-	bytes, err := json.Marshal(data[0])
+	bytes, err := json.Marshal(data)
 	if err != nil {
 		return err
 	}
